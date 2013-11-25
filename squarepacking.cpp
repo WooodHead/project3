@@ -119,9 +119,13 @@ public:
         }
 
         branch(*this, s, INT_VAL_MIN());
-        branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
-        branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
+    //    branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
+      //  branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
         //branch(*this, p, INT_VAR_NONE(), INT_VAL_MIN());
+        IntArgs w(x.size());
+        interval(*this, x, w, 0.0);
+        interval(*this, y, w, 0.0);
+
     }
 
     Squarepack(bool share, Squarepack& sh) : Script(share, sh) {
@@ -167,7 +171,7 @@ int main(int argc, char* argv[]) {
     SizeOptions opt("Squarepack");
 
     // comment out the following line to get a graphical view of the search tree
-   //  opt.mode(Gecode::SM_GIST);
+   // opt.mode(Gecode::SM_GIST);
 
     if(argc < 2) return 1;
     N = atoi(argv[1]);

@@ -77,14 +77,14 @@ public:
 	virtual bool status(const Space&) const {
         for (int i=0; i<x.size(); i++)
             if(!x[i].assigned())
-                return false;
-        return true;
+                return true;
+        return false;
     }
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
         for(int i=0; true; i++)
             if(!x[i].assigned())
-                return new Description(*this, i, x[i].min(), 0);
+                return new Description(*this, 2, i, x[i].min());
         GECODE_NEVER;
         return NULL;
 	}
