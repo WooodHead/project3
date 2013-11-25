@@ -6,7 +6,7 @@
 #include <math.h>
 #include <cstdio>
 
-#include "interval.cpp"
+#include "interval.h"
 
 using namespace std;
 using namespace Gecode;
@@ -283,9 +283,12 @@ public:
 		}
 
 		branch(*this, s, INT_VAL_MIN());
-		branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
-		branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN()); 
+//		branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
+//		branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
 		//branch(*this, p, INT_VAR_NONE(), INT_VAL_MIN());
+        IntArgs w(x.size());
+        interval(*this, x,w,0.0);
+        interval(*this, y,w,0.0);
 	}
 
 	Squarepack(bool share, Squarepack& sh) : Script(share, sh) {
@@ -343,8 +346,8 @@ int main(int argc, char* argv[]) {
 	n = N-1;
 	
 	std::stringstream filename;
-	filename << "project1-t" << TeamNr << "-n" << N << ".txt";
-	freopen(filename.str().c_str(),"w",stdout);
+    //filename << "project1-t" << TeamNr << "-n" << N << ".txt";
+    //freopen(filename.str().c_str(),"w",stdout);
 	
 	//cout << "enter n: " << endl;
 	//cin >> N;

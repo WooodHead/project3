@@ -10,10 +10,10 @@
 #include <gecode/int.hh>
 #include <gecode/minimodel.hh>
 
+#include "interval.h"
+
 using namespace Gecode;
 using namespace Gecode::Int;
-
-void interval(Home home, const IntVarArgs& x, const IntArgs& w, double p);
 
 class IntervalBranch : Brancher {
 protected:
@@ -75,13 +75,18 @@ public:
     }
 	/// Check status of branching, return true if alternatives left.
 	virtual bool status(const Space&) const {
-		
-		/// FILL HERE....
+        for (int i=0; i<x.size(); i++)
+            if(!x[i].assigned())
+                return false;
+        return true;
     }
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
-
-		/// FILL HERE....
+        for(int i=0; true; i++)
+            if(!x[i].assigned())
+                return new Description(*this, i, x[i].min(), 0);
+        GECODE_NEVER;
+        return NULL;
 	}
     /// return choice description and reconstruct from archive
     virtual Choice* choice(const Space&, Archive& e){
@@ -92,9 +97,14 @@ public:
 	/// Perform commit for branching description d and alternative a.
 	virtual ExecStatus commit(Space& home, const Gecode::Choice& _d,
 							  unsigned int a) {
+
 		const Description& d = static_cast<const Description&>(_d);
 		
-		/// FILL HERE....
+        int pos=d.pos, val=d.min;
+        if(a == 0)
+            return me_failed(x[pos].eq(home,val)) ? ES_FAILED : ES_OK;
+        else
+            return me_failed(x[pos].nq(home,val)) ? ES_FAILED : ES_OK;
     }
     /// Print explanation
     virtual void print(const Space&, const Gecode::Choice& _d,
