@@ -1,6 +1,6 @@
 #!/bin/bash
 X=5
-while [ $X -lt 7 ]
+while [ $X -lt 20 ]
 do
     ./project3 $X > test.log
     cat test.log
