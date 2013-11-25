@@ -6,6 +6,8 @@
 #include <math.h>
 #include <cstdio>
 
+#include "interval.cpp"
+
 using namespace std;
 using namespace Gecode;
 using namespace Gecode::Driver;

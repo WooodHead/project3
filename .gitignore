@@ -1,0 +1,5 @@
+*.o
+Makefile
+project3
+project3.pro
+project3.pro.user
