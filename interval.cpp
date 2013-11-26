@@ -97,27 +97,26 @@ public:
         return new Description(*this, alt, pos, min, max);
     }
 	/// Perform commit for branching description d and alternative a.
-	virtual ExecStatus commit(Space& home, const Gecode::Choice& _d,
-							  unsigned int a) {
+	virtual ExecStatus commit(Space& home, const Gecode::Choice& _d, unsigned int a) {
 
 		const Description& d = static_cast<const Description&>(_d);
 		
         int pos=d.pos, min=d.min, max=d.max;
-		if(d.alternatives() == 3) {
-			ModEvent failed = 0;
-			int part = (max - min + 1)/d.alternatives();
 
-			if(a < d.alternatives()) {
-				failed |= x[pos].gq(home, (long)(min+part*a));		
-				failed |= x[pos].le(home, (long)(min+part*(a+1)));
-			}
-			else {
-				failed |= x[pos].gq(home, (long)(min+part*a));		
-			}
+		ModEvent failed = 0;
+		int part = ceil((double)(max-min+1)/(double)d.alternatives());
 
-			return me_failed(failed)? ES_FAILED : ES_OK;
+		if(a < d.alternatives()-1) {
+			failed |= x[pos].gq(home, (long long)(min+part*a));		
+			failed |= x[pos].le(home, (long long)(min+part*(a+1)));
 		}
+		else {
+			failed |= x[pos].gq(home, (long)(min+part*a));		
+		}
+
+		return me_failed(failed)? ES_FAILED : ES_OK;
     }
+
     /// Print explanation
     virtual void print(const Space&, const Gecode::Choice& _d,
                        unsigned int a,
