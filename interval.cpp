@@ -14,6 +14,7 @@
 
 using namespace Gecode;
 using namespace Gecode::Int;
+using namespace Gecode::Iter::Ranges;
 
 class IntervalBranch : Brancher {
 protected:
@@ -32,9 +33,10 @@ protected:
 		int pos;
 		/// Smallest value of view
 		int min;
+		int max;
         
-		Description(const Brancher& b, unsigned int a, int _pos, int _min)
-		: Choice(b,a), pos(_pos), min(_min) {}
+		Description(const Brancher& b, unsigned int a, int _pos, int _min, int _max)
+		: Choice(b,a), pos(_pos), min(_min), max(_max) {}
 		/// Report size occupied
 		virtual size_t size(void) const {
 			return sizeof(Description);
@@ -42,7 +44,7 @@ protected:
         /// Archive into e
         virtual void archive(Archive& e) const {
             Choice::archive(e);
-            e << alternatives() << pos << min;
+            e << alternatives() << pos << min << max;
         }
 	};
 	
@@ -84,15 +86,15 @@ public:
 	virtual Choice* choice(Space&) {
         for(int i=0; true; i++)
             if(!x[i].assigned())
-                return new Description(*this, 3, i, x[i].min());
+                return new Description(*this, 3, i, x[i].min(), x[i].max());
         GECODE_NEVER;
         return NULL;
 	}
     /// return choice description and reconstruct from archive
     virtual Choice* choice(const Space&, Archive& e){
-        int alt,pos,min;
-        e >> alt >> pos >> min;
-        return new Description(*this, alt, pos, min);
+        int alt,pos,min,max;
+        e >> alt >> pos >> min >> max;
+        return new Description(*this, alt, pos, min, max);
     }
 	/// Perform commit for branching description d and alternative a.
 	virtual ExecStatus commit(Space& home, const Gecode::Choice& _d,
@@ -100,10 +102,20 @@ public:
 
 		const Description& d = static_cast<const Description&>(_d);
 		
-        int pos=d.pos, val=d.min;
+        int pos=d.pos, min=d.min, max=d.max;
 		if(d.alternatives() == 3) {
-			int v = val+a;
-			return me_failed(x[pos].eq(home,v)) ? ES_FAILED : ES_OK;
+			ModEvent failed = 0;
+			int part = (max - min + 1)/d.alternatives();
+
+			if(a < d.alternatives()) {
+				failed |= x[pos].gq(home, (long)(min+part*a));		
+				failed |= x[pos].le(home, (long)(min+part*(a+1)));
+			}
+			else {
+				failed |= x[pos].gq(home, (long)(min+part*a));		
+			}
+
+			return me_failed(failed)? ES_FAILED : ES_OK;
 		}
     }
     /// Print explanation
