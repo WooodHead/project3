@@ -1,0 +1,73 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{rotating}
+\usepackage{tikz} \usetikzlibrary{trees}
+\usepackage{pbox}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\newcommand{\AnyCond}[1]{\text{Any}(#1)}
+\newcommand{\BoundedCond}[1]{\text{Bounded}(#1)}
+\newcommand{\Constraint}[1]{\textsc{#1}}
+\newcommand{\DepProps}{\textit{DepProps}}
+\newcommand{\Distinct}{\Constraint{Distinct}}
+\newcommand{\Failed}{\text{Failed}}
+\newcommand{\FailedCond}[1]{\text{Failed}(#1)}
+\newcommand{\FixedCond}[1]{\text{Fixed}(#1)}
+\newcommand{\Fixpoint}{\text{AtFixpt}}
+\newcommand{\NoneCond}[1]{\text{None}(#1)}
+\newcommand{\Gecode}{\textit{Gecode}}
+\newcommand{\GIST}{\textit{GIST}}
+\newcommand{\Propagate}{\text{Propagate}}
+\newcommand{\PropConds}[1]{\text{PropConds}(#1)}
+\newcommand{\Sequence}[1]{\left[#1\right]}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\newcommand{\Subsumed}{\text{Subsumed}}
+\newcommand{\Tuple}[1]{\left\langle#1\right\rangle}
+\newcommand{\Unknown}{\text{Unknown}}
+
+\pagestyle{empty}
+
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thesubsection}{\Alph{section}.\alph{subsection}}
+
+\title{\textbf{Constraint Programming (course 1DL440) \\
+    Uppsala University -- Autumn 2013 \\
+    Report for Project $2$
+    by Team $7$  % replace t by your team number
+  }
+}
+
+\author{Patrik Broman \and Max Pihlstrom} % replace by your name(s)
+
+%\date{Month Day, Year}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+\section{The no-overlap propagator}
+
+\subsection{Pseudo code}
+
+\input{pseudo.tex}
+
+\subsection{Discussion}
+
+%\includegraphics[scale=0.7]{illustration1}
+
+\subsection{Runtimes and failures}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{stats.txt} 
+\end{tabular}
+\caption{Runtimes and failures with the new custom propagator} 
+\end{table}
+
+\end{document}

@@ -1,0 +1,35 @@
+function noOverlap(R) \\
+\indent subsumed = true \\
+\indent for $\forall$ A,B $\in$ R, A $\neq$ B \\
+\indent \indent left = min(A.x) + A.width $\leq$ max(B.x) \\
+\indent \indent right = min(B.x) + B.width $\leq$ max(A.x) \\
+\indent \indent below = min(A.y) + A.height $\leq$ max(B.y) \\
+\indent \indent above = min(B.y) + B.height $\leq$ max(A.y) \\
+\indent \indent noHorOverlap = left $\vee$ right \\
+\indent \indent noVerOverlap = above $\vee$ below \\
+\\
+\indent \indent if $\neg$(noHorOverlap $\vee$ noVerOverlap) \\
+\indent \indent \indent return FAIL \\
+\\
+\indent \indent strictLeft = max(A.x) + A.width $\leq$ min(B.x) \\
+\indent \indent strictRight = max(B.x) + B.width $\leq$ min(A.x) \\
+\indent \indent strictBelow = max(A.y) + A.height $\leq$ min(B.y) \\
+\indent \indent strictAbove = max(B.y) + B.height $\leq$ min(A.y) \\
+\\
+\indent \indent if $\neg$(strictLeft $\vee$ strictRight $\vee$ strictBelow $\vee$ strictAbove) \\
+\indent \indent \indent subsumed = false \\
+\indent \indent if noHorOverlap $\land \neg$noVerOverlap \\
+\indent \indent \indent leftBorder=max(B.x) \\
+\indent \indent \indent rightBorder=min(B.x) + B.width \\
+\indent \indent if rightBorder $>$ leftBorder \\ 
+\indent \indent \indent A.x = \{ e $\in$ A.x, leftBorder-A.width $\leq$ e $<$ rightBorder \} \\
+\indent \indent if $\neg$noHorOverlap $\land$noVerOverlap \\
+\indent \indent \indent belowBorder=max(B.x) \\
+\indent \indent \indent aboveBorder=min(B.x) + B.height \\
+\indent \indent if belowBorder $>$ aboveBorder \\ 
+\indent \indent \indent A.y = \{ e $\in$ A.y, belowBorder-A.height $\leq$ e $<$ aboveBorder \} \\
+\indent \indent if A.size = 0 $\vee$ B.size = 0 \\
+\indent \indent \indent return FAIL \\
+\indent if subsumed \\
+\indent \indent return SUBSUMED \\
+\indent return ANY \\
