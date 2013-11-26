@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
     SizeOptions opt("Squarepack");
 
     // comment out the following line to get a graphical view of the search tree
-   // opt.mode(Gecode::SM_GIST);
+    opt.mode(Gecode::SM_GIST);
 
     if(argc < 2) return 1;
     N = atoi(argv[1]);

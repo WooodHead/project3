@@ -84,7 +84,7 @@ public:
 	virtual Choice* choice(Space&) {
         for(int i=0; true; i++)
             if(!x[i].assigned())
-                return new Description(*this, 2, i, x[i].min());
+                return new Description(*this, 3, i, x[i].min());
         GECODE_NEVER;
         return NULL;
 	}
@@ -101,10 +101,10 @@ public:
 		const Description& d = static_cast<const Description&>(_d);
 		
         int pos=d.pos, val=d.min;
-        if(a == 0)
-            return me_failed(x[pos].eq(home,val)) ? ES_FAILED : ES_OK;
-        else
-            return me_failed(x[pos].nq(home,val)) ? ES_FAILED : ES_OK;
+		if(d.alternatives() == 3) {
+			int v = val+a;
+			return me_failed(x[pos].eq(home,v)) ? ES_FAILED : ES_OK;
+		}
     }
     /// Print explanation
     virtual void print(const Space&, const Gecode::Choice& _d,
