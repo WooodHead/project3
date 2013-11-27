@@ -89,6 +89,7 @@ public:
             if(!x[i].assigned()) {
 				int n = ceil((double)(x[i].max()+1)/((double)(x[i].min()+w[i])*(1.0 - p)));
 				if(n < 2) n = 2;
+				if(n > x[i].size()) n = x[i].size();
 				return new Description(*this, n, i, x[i].min(), x[i].max());
 			}
 		}
