@@ -119,13 +119,12 @@ public:
         }
 
         branch(*this, s, INT_VAL_MIN());
-    //    branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
-      //  branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
-        //branch(*this, p, INT_VAR_NONE(), INT_VAL_MIN());
 
         interval(*this, x, sizes, 0.5);
         interval(*this, y, sizes, 0.5);
 
+		branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
+		branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
     }
 
     Squarepack(bool share, Squarepack& sh) : Script(share, sh) {

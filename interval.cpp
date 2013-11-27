@@ -85,18 +85,16 @@ public:
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
 
-		for(int i=0; true; i++) {
+		for(int i = 0; i < x.size(); i++) {
             if(!x[i].assigned()) {
-				int xsize = x[i].size();
-				int width = w[i];
-				int n = ceil((double)xsize/((double)width*(1.0 - p) + 1.0));
-				if(n < 2) n = 2;
-				if(n > x[i].size()) n = x[i].size(); //shouldn't happen
-				return new Description(*this, n, i, x[i].min(), x[i].max());
+				int n = ceil((double)x[i].size()/((double)w[i]*(1.0 - p) + 1.0));
+				//if(n < 2) n = 2;
+				if(n >= 2) 
+					return new Description(*this, n, i, x[i].min(), x[i].max());
 			}
 		}
 
-        GECODE_NEVER;
+        //GECODE_NEVER;
         return NULL;
 	}
     /// return choice description and reconstruct from archive
@@ -110,7 +108,7 @@ public:
 
 		const Description& d = static_cast<const Description&>(_d);
 		
-		//if(d.alternatives() < 1) return ES_FAILED;
+		//if(d.alternatives() < 2) return ES_FAILED;
 
         int pos=d.pos, min=d.min, max=d.max;
 		int card = max-min+1;
