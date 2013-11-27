@@ -84,9 +84,15 @@ public:
     }
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
-        for(int i=0; true; i++)
-            if(!x[i].assigned())
-                return new Description(*this, 3, i, x[i].min(), x[i].max());
+
+		for(int i=0; true; i++) {
+            if(!x[i].assigned()) {
+				int n = ceil((double)(x[i].max()+1)/((double)(x[i].min()+w[i])*(1.0 - p)));
+				if(n < 2) n = 2;
+				return new Description(*this, n, i, x[i].min(), x[i].max());
+			}
+		}
+
         GECODE_NEVER;
         return NULL;
 	}
@@ -104,14 +110,14 @@ public:
         int pos=d.pos, min=d.min, max=d.max;
 
 		ModEvent failed = 0;
-		int part = ceil((double)(max-min+1)/(double)d.alternatives());
+		int part = (max-min+1)/d.alternatives();
 
 		if(a < d.alternatives()-1) {
 			failed |= x[pos].gq(home, (long long)(min+part*a));		
 			failed |= x[pos].le(home, (long long)(min+part*(a+1)));
 		}
 		else {
-			failed |= x[pos].gq(home, (long)(min+part*a));		
+			failed |= x[pos].gq(home, (long long)(min+part*a));		
 		}
 
 		return me_failed(failed)? ES_FAILED : ES_OK;
