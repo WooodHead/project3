@@ -122,9 +122,9 @@ public:
     //    branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
       //  branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
         //branch(*this, p, INT_VAR_NONE(), INT_VAL_MIN());
-        IntArgs w(x.size());
-        interval(*this, x, w, 0.0);
-        interval(*this, y, w, 0.0);
+
+        interval(*this, x, sizes, 0.5);
+        interval(*this, y, sizes, 0.5);
 
     }
 
@@ -181,9 +181,9 @@ int main(int argc, char* argv[]) {
     }
     n = N-1;
 
-//    std::stringstream filename;
-//    filename << "project1-t" << TeamNr << "-n" << N << ".txt";
- //   freopen(filename.str().c_str(),"w",stdout);
+    std::stringstream filename;
+    filename << "project1-t" << TeamNr << "-n" << N << ".txt";
+    freopen(filename.str().c_str(),"w",stdout);
 
     //cout << "enter n: " << endl;
     //cin >> N;

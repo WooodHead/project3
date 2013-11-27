@@ -87,9 +87,11 @@ public:
 
 		for(int i=0; true; i++) {
             if(!x[i].assigned()) {
-				int n = ceil((double)(x[i].max()+1)/((double)(x[i].min()+w[i])*(1.0 - p)));
+				int xsize = x[i].size();
+				int width = w[i];
+				int n = ceil((double)xsize/((double)width*(1.0 - p) + 1.0));
 				if(n < 2) n = 2;
-				if(n > x[i].size()) n = x[i].size();
+				if(n > x[i].size()) n = x[i].size(); //shouldn't happen
 				return new Description(*this, n, i, x[i].min(), x[i].max());
 			}
 		}
@@ -108,10 +110,13 @@ public:
 
 		const Description& d = static_cast<const Description&>(_d);
 		
+		//if(d.alternatives() < 1) return ES_FAILED;
+
         int pos=d.pos, min=d.min, max=d.max;
+		int card = max-min+1;
+		int part = ceil((double)card/(double)d.alternatives());
 
 		ModEvent failed = 0;
-		int part = (max-min+1)/d.alternatives();
 
 		if(a < d.alternatives()-1) {
 			failed |= x[pos].gq(home, (long long)(min+part*a));		
