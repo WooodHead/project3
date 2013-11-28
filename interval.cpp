@@ -75,25 +75,34 @@ public:
         w.~IntSharedArray();
         return sizeof(*this);
     }
+
+	int partitions(int i) const {
+		return ceil((double)x[i].size()/((double)w[i]*(1.0 - p) + 1.0));
+	}
+
 	/// Check status of branching, return true if alternatives left.
 	virtual bool status(const Space&) const {
-        for (int i=0; i<x.size(); i++)
-            if(!x[i].assigned())
-                return true;
-        return false;
+		for(int i = 0; i < x.size(); i++) {
+            if(!x[i].assigned() && partitions(i) >= 2) {
+				return true;
+			}
+		}
+		return false;
     }
+
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
 
 		for(int i = 0; i < x.size(); i++) {
             if(!x[i].assigned()) {
-				int n = ceil((double)x[i].size()/((double)w[i]*(1.0 - p) + 1.0));
+				int n = partitions(i);
 				if(n >= 2) 
 					return new Description(*this, n, i, x[i].min(), x[i].max());
 			}
 		}
 
-        return new Description(*this, 1, 0, 0, 0); //dummy choice
+		GECODE_NEVER;
+		return NULL;
 	}
     /// return choice description and reconstruct from archive
     virtual Choice* choice(const Space&, Archive& e){
