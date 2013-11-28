@@ -99,7 +99,7 @@ The brancher described in the pseudo code and in the above section does not (in 
 
 \subsection{Runtimes and failures}
 
-The brancher was ran on different values on $p$ on code from both project 1 and project 2 -- that is, with and without the custom propagator (the latter in its intended implementation).
+The brancher was ran on different values on $p$ on code from both Project 1 and Project 2 -- that is, with and without the custom propagator (the latter in a corrected but unverified intended implementation).
 
 Different values on $p$ gives different results. However, it seems impossible to find an optimum value for $p$. Without the custom propagator and $p=0.5$ we get very good results for $n=18$. When increasing $p$ to $0.8$ the performance for $n=18$ gets worse, but at $n \geq 20$ a huge improvement can be observed. When comparing the custom brancher for $p=0.8$ with and without the custom propagator, we get worse performance in general for $n<23$ but about the same performance for $n=23$. When reducing $p$ to $0.7$, the performance gets much better for $n<23$ but much worse at $n=23$.
 
@@ -176,6 +176,24 @@ $n$ & Time (sec) & Failures \\
 \hline  \input{tableprop_p10.txt} 
 \end{tabular}
 \caption{Runtimes and failures with $p = 1.0$ and the custom overlap propagator.} 
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{stats_old.txt} 
+\end{tabular}
+\caption{Runtimes and failures for the solver of Project 1.} 
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{stats_customprop.txt} 
+\end{tabular}
+\caption{Runtimes and failures for the solver of Project 2 (with a corrected but unverified propagator).} 
 \end{table}
 
 \end{document}
