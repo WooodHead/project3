@@ -1,6 +1,6 @@
 function interval(X, W, p) \\
 \indent for $\forall i \in [0, X.size()): \lnot assigned(X[i])$ \\
-\indent \indent $size_{X[i]} := X[i].max()+1-X[i].min()$ \\
+\indent \indent $size_{X[i]} := max(X[i])+1-min(X[i])$ \\
 \indent \indent $q := ceil(size_{X[i]}/(W[i](1 - p) + 1))$ \\
 \indent \indent if $q > 1$ \\
 \indent \indent \indent $fps := ceil(size_{X[i]}/q)$ /* fps: first partitions size */\\

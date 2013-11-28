@@ -57,6 +57,40 @@
 
 \subsection{Discussion}
 
+Regarding the obligatory part, we are only interested in its size. Calculating this number, given some $x_i$, becomes a simple matter of taking the difference between the size of the side and the size of the domain extremes: $w + 1 - (max(x_i) + 1 - min(x_i))$. Let $s_{x_1} = max(x_i) + 1 - min(x_i)$.  When considering partitions, we are essentially shrinking the domain by dividing it by some $q$, and so the formula for the size of the obligatory part of a partition can be expressed as follows.
+
+\begin{equation}
+w + 1 - s_{x_1}/q
+\end{equation}
+
+By dividing this expression with $w$ we get an expression for the percentage number $p$.
+
+\begin{equation}
+\label{eqp}
+p = \frac{w + 1 - s_{x_1}/q}{w}
+\end{equation}
+
+Solving this equation for $q$ we get the following formula for the partition number.
+
+\begin{equation}
+\label{eqq}
+q = \frac{s_{x_1}}{w\cdot(1-p)+1}
+\end{equation}
+
+The brancher naturally requires discrete values of $q$. In equations \eqref{eqp} and \eqref{eqq}, increasing $p$ also increases $q$, and vice versa. To ensure that the percentage number of the obligatory parts of the partitions is at least the specified $p$, $q$ is rounded up to the closest integer.
+
+Finally, the brancher divides and in turn constrains the domain into $q$ mutually exclusive and exhaustive partitions. Since the size of each domain needs to be discrete, one partition must necessarily be smaller than the rest which are of equal size. To arrive at the size of the first $q-1$ partitions, the following formula is used.
+
+\begin{equation}
+k_{first} = \frac{s_{x_1}}{ceil(q)} 
+\end{equation}
+
+A formula for the final partition size is then given by given by:
+
+\begin{equation}
+k_{last} = s_{x_1} \pmod{k_{first}}
+\end{equation}
+
 %\includegraphics[scale=0.7]{illustration1}
 
 \subsection{Runtimes and failures}
@@ -65,9 +99,35 @@
 \centering
 \begin{tabular}{r|r|r}
 $n$ & Time (sec) & Failures \\
-\hline  \input{stats.txt} 
+\hline  \input{stats1.txt} 
 \end{tabular}
-\caption{Runtimes and failures with the new custom propagator} 
+\caption{Runtimes and failures with ...} 
 \end{table}
 
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{stats2.txt} 
+\end{tabular}
+\caption{Runtimes and failures with ...} 
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{stats3.txt} 
+\end{tabular}
+\caption{Runtimes and failures with ...} 
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$n$ & Time (sec) & Failures \\
+\hline  \input{statsold.txt} 
+\end{tabular}
+\caption{Runtimes and failures with ...} 
+\end{table}
 \end{document}
