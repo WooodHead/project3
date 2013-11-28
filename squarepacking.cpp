@@ -49,7 +49,6 @@ public:
             }
         }
 
-
         IntArgs sizes(n);
         for(int j = 0; j < n; ++j)
             sizes[j] = size(j);
@@ -120,8 +119,9 @@ public:
 
         branch(*this, s, INT_VAL_MIN());
 
-        interval(*this, x, sizes, 0.5);
-        interval(*this, y, sizes, 0.5);
+		double p = 0.0;
+        interval(*this, x, sizes, p);
+        interval(*this, y, sizes, p);
 
 		branch(*this, x, INT_VAR_NONE(), INT_VAL_MIN());
 		branch(*this, y, INT_VAR_NONE(), INT_VAL_MIN());
