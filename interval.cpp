@@ -93,10 +93,11 @@ public:
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
 
-		for(int i = 0; i < x.size(); i++) {
+        for(int i = start; i < x.size(); i++) {
             if(!x[i].assigned()) {
 				int q = partitions(i);
-				if(q >= 2) 
+                if(q >= 2)
+                    start=i;
 					return new Description(*this, q, i, x[i].min(), x[i].max());
 			}
 		}
