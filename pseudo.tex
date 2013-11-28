@@ -1,8 +1,9 @@
 function interval(X, W, p) \\
-\indent for $\forall i \in \{0, \dots, |X|-1\}: X[i].size() > 1$ \\
-\indent \indent $q = ceil(x.size()/(W[i](1 - p) + 1))$ \\
+\indent for $\forall i \in [0, X.size()): \lnot assigned(X[i])$ \\
+\indent \indent $size_{X[i]} := X[i].max()+1-X[i].min()$ \\
+\indent \indent $q := ceil(size_{X[i]}/(W[i](1 - p) + 1))$ \\
 \indent \indent if $q > 1$ \\
-\indent \indent \indent $fps = ceil(x.size()/q)$ /*fps = first\_partitions\_size*/\\
-\indent \indent \indent $lps = x.size() - fps \cdot (q-1)$ /*lps = last\_partition\_size*/\\
+\indent \indent \indent $fps := ceil(size_{X[i]}/q)$ /* fps: first partitions size */\\
+\indent \indent \indent $lps := size_{X[i]} - fps \cdot (q-1)$ /* lps: last partition size */\\
 \indent \indent \indent return $q, fps, lps$\\
 \indent return FAIL\\
