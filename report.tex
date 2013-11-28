@@ -55,45 +55,56 @@
 
 \input{pseudo.tex}
 
-\subsection{Discussion}
+\subsection{Brancher principles}
 
-Regarding the obligatory part, we are only interested in its size. Calculating this number, given some $x_i$, becomes a simple matter of taking the difference between the size of the side and the size of the domain extremes: $w + 1 - (max(x_i) + 1 - min(x_i))$. Let $s_{x_1} = max(x_i) + 1 - min(x_i)$.  When considering partitions, we are essentially shrinking the domain by dividing it by some $q$, and so the formula for the size of the obligatory part of a partition can be expressed as follows.
+Regarding the obligatory part, we are only interested in its size. Calculating this number, given some $x_i$, becomes a simple matter of taking the difference between the size of the side and the size of the domain extremes: $w + 1 - (max(x_i) + 1 - min(x_i))$. Let $s_{x_i} = max(x_i) + 1 - min(x_i)$.  When considering partitions, we are essentially shrinking the domain by dividing it by some $q$, and so the formula for the size of the obligatory part of a partition can be expressed as follows.
 
 \begin{equation}
-w + 1 - s_{x_1}/q
+w + 1 - s_{x_i}/q
 \end{equation}
 
 By dividing this expression with $w$ we get an expression for the percentage number $p$.
 
 \begin{equation}
 \label{eqp}
-p = \frac{w + 1 - s_{x_1}/q}{w}
+p = \frac{w + 1 - s_{x_i}/q}{w}
 \end{equation}
 
 Solving this equation for $q$ we get the following formula for the partition number.
 
 \begin{equation}
 \label{eqq}
-q = \frac{s_{x_1}}{w\cdot(1-p)+1}
+q = \frac{s_{x_i}}{w\cdot(1-p)+1}
 \end{equation}
 
-The brancher naturally requires discrete values of $q$. In equations \eqref{eqp} and \eqref{eqq}, increasing $p$ also increases $q$, and vice versa. To ensure that the percentage number of the obligatory parts of the partitions is at least the specified $p$, $q$ is rounded up to the closest integer.
+The brancher requires discrete values of $q$. In equations \eqref{eqp} and \eqref{eqq}, increasing $p$ also increases $q$, and vice versa. To ensure that the percentage number of the obligatory parts of the partitions is at least the specified $p$, $q$ is rounded up to the closest integer.
 
-Finally, the brancher divides and in turn constrains the domain into $q$ mutually exclusive and exhaustive partitions. Since the size of each domain needs to be discrete, one partition must necessarily be smaller than the rest which are of equal size. To arrive at the size of the first $q-1$ partitions, the following formula is used.
+Finally, the brancher divides and in turn constrains the domain into $q$ mutually exclusive and exhaustive partitions. Since the size of each domain needs to be discrete, the size of one partition must be smaller or equal to the rest which are of equal size. To arrive at the size of the first $q-1$ partitions, the following formula is used.
 
 \begin{equation}
-k_{first} = \frac{s_{x_1}}{ceil(q)} 
+k_{first} = \frac{s_{x_i}}{ceil(q)} 
 \end{equation}
 
 A formula for the final partition size is then given by given by:
 
 \begin{equation}
-k_{last} = s_{x_1} \pmod{k_{first}}
+k_{last} = s_{x_i} \pmod{k_{first}}
 \end{equation}
+
+\subsection{Discussion}
+
+The brancher described in the pseudo code and in the above section does not (in general) assign values to the variables it constrains, and is therefore not a substitute for the \emph{INT\_VAR\_NONE-INT\_VAL\_MIN} brancher which is still executed in the aftermath. The brancher does not consider the existence of gaps in the domains and may therefore overestimate the percentage number of the  obligatory parts, or perform unnecessary branchings. Ideally, perhaps, gaps could be accounted for so that the value $p$ more accurately reflects its intended measure and function. That is, since the general idea of the strategy is sound and this particular implementation seems to prove itself successful, it is reasonable to think that taking the idea to its logical conclusion would yield even better results.
 
 %\includegraphics[scale=0.7]{illustration1}
 
 \subsection{Runtimes and failures}
+
+The brancher was ran on different values on p for both the code from project 1 and project 2, that is, with and without the custom propagator.
+
+Different values on p gives different results. However, it seems impossible to find an optimum value on p. Without the custom propagator and p=0.5 we get very good results for n=18. When increasing p to 0.8 the performance for n=18 gets worse, but a huge improvement at n>=20 can be observed. When comparing the custom brancher for p=0.8 with and without the custom propagator we get in general worse performance for n<23 but at n=23 the performance is about the same. When reducing p to 0.7 the performance for n<23 gets much better but much worse at n=23.
+
+The conclusion is therefore that the custom brancher with a good value on p can give a significant performance boost, but sadly enough, it's far from trivial to find a good value on p.
+
 
 \begin{table}[h]
 \centering
