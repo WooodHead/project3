@@ -24,8 +24,6 @@ protected:
 	IntSharedArray w;
 	/// Fraction for mandatory part
 	double p;
-	/// Cache of next unassigned view
-	mutable int start;
 	/// Choice description
 	class Description : public Choice {
 	public:
@@ -52,7 +50,7 @@ public:
     
     /// Construct branching
 	IntervalBranch(Home home, ViewArray<IntView>& _x, IntSharedArray& _w, double _p)
-    : Brancher(home), x(_x), w(_w), p(_p), start(0) {
+    : Brancher(home), x(_x), w(_w), p(_p) {
         home.notice(*this,AP_DISPOSE);
     }
     /// Post branching
@@ -61,7 +59,7 @@ public:
 	}
 	/// Copy constructor used during cloning
 	IntervalBranch(Space& home, bool share, IntervalBranch& intervalbranch)
-    : Brancher(home, share, intervalbranch), p(intervalbranch.p), start(intervalbranch.start) {
+    : Brancher(home, share, intervalbranch), p(intervalbranch.p) {
 		x.update(home, share, intervalbranch.x);
         w.update(home, share, intervalbranch.w);
 	}
@@ -93,11 +91,10 @@ public:
 	/// Return branching choice description
 	virtual Choice* choice(Space&) {
 
-        for(int i = start; i < x.size(); i++) {
+        for(int i = 0; i < x.size(); i++) {
             if(!x[i].assigned()) {
 				int q = partitions(i);
                 if(q >= 2)
-                    start=i;
 					return new Description(*this, q, i, x[i].min(), x[i].max());
 			}
 		}
