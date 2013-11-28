@@ -1,0 +1,5 @@
+The brancher was ran on different values on p for both the code from project 1 and project 2, that is, with and without the custom propagator.
+
+Different values on p gives different results. However, it seems impossible to find an optimum value on p. Without the custom propagator and p=0.5 we get very good results for n=18. When increasing p to 0.8 the performance for n=18 gets worse, but a huge improvement at n>=20 can be observed. When comparing the custom brancher for p=0.8 with and without the custom propagator we get in general worse performance for n<23 but at n=23 the performance is about the same. When reducing p to 0.7 the performance for n<23 gets much better but much worse at n=23.
+
+The conclusion is therefore that the custom brancher with a good value on p can give a significant performance boost, but sadly enough, it's far from trivial to find a good value on p.
