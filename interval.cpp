@@ -75,8 +75,9 @@ public:
         return sizeof(*this);
     }
 
-	int partitions(int i) const {
-		return ceil((double)x[i].size()/((double)w[i]*(1.0 - p) + 1.0));
+	inline int partitions(int i) const {
+		int s = x[i].max() + 1 - x[i].min(); //span
+		return ceil((double)s/((double)w[i]*(1.0 - p) + 1.0));
 	}
 
 	/// Check status of branching, return true if alternatives left.
@@ -116,8 +117,8 @@ public:
 		const Description& d = static_cast<const Description&>(_d);
 		
         int pos=d.pos, min=d.min, max=d.max;
-		int card = max-min+1;
-		int part = ceil((double)card/(double)d.alternatives());
+		int span = max-min+1;
+		int part = ceil((double)span/(double)d.alternatives());
 
 		bool failed = false;
 
