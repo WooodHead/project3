@@ -95,9 +95,9 @@ public:
 
 		for(int i = 0; i < x.size(); i++) {
             if(!x[i].assigned()) {
-				int n = partitions(i);
-				if(n >= 2) 
-					return new Description(*this, n, i, x[i].min(), x[i].max());
+				int q = partitions(i);
+				if(q >= 2) 
+					return new Description(*this, q, i, x[i].min(), x[i].max());
 			}
 		}
 
@@ -115,24 +115,19 @@ public:
 
 		const Description& d = static_cast<const Description&>(_d);
 		
-		if(d.alternatives() == 1)
-			return ES_FAILED;
-
         int pos=d.pos, min=d.min, max=d.max;
 		int card = max-min+1;
 		int part = ceil((double)card/(double)d.alternatives());
 
-		ModEvent failed = 0;
+		bool failed = false;
+
+		failed |= me_failed(x[pos].gq(home, (long long)(min+part*a)));
 
 		if(a < d.alternatives()-1) {
-			failed |= x[pos].gq(home, (long long)(min+part*a));		
-			failed |= x[pos].le(home, (long long)(min+part*(a+1)));
-		}
-		else {
-			failed |= x[pos].gq(home, (long long)(min+part*a));		
+			failed |= me_failed(x[pos].le(home, (long long)(min+part*(a+1))));
 		}
 
-		return me_failed(failed)? ES_FAILED : ES_OK;
+		return failed? ES_FAILED : ES_OK;
     }
 
     /// Print explanation
